@@ -1,8 +1,6 @@
-diff --git a/meson.build b/meson.build
-index c5135330f..0f0c3d5ed 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -279,10 +279,6 @@ if host_machine.system() != 'windows'
+@@ -286,10 +286,6 @@
    endif
  endif
  
@@ -13,7 +11,25 @@ index c5135330f..0f0c3d5ed 100644
  # Headers which are usable
  
  check_usable_headers = [
-@@ -374,7 +370,7 @@ if cc.has_function('dgettext')
+@@ -322,7 +318,6 @@
+   'getuid',
+   'lrintf',
+   'lstat',
+-  'memfd_create',
+   'mkfifo',
+   'mlock',
+   'nanosleep',
+@@ -369,8 +364,7 @@
+   endif
+ endforeach
+ 
+-if cc.has_header_symbol('sys/syscall.h', 'SYS_memfd_create') \
+-  or cc.has_function('memfd_create')
++if false
+   cdata.set('HAVE_MEMFD', 1)
+ endif
+ 
+@@ -381,7 +375,7 @@
      libintl_dep = cc.find_library('intl')
    endif
  else
@@ -22,7 +38,7 @@ index c5135330f..0f0c3d5ed 100644
  endif
  
  # Symbols
-@@ -440,6 +436,8 @@ endif
+@@ -448,6 +442,8 @@
  # Core Dependencies
  
  libm_dep = cc.find_library('m', required : true)
@@ -31,50 +47,3 @@ index c5135330f..0f0c3d5ed 100644
  
  thread_dep = dependency('threads')
  foreach f : [
-diff --git a/src/modules/meson.build b/src/modules/meson.build
-index 1e12569dc..6112480e2 100644
---- a/src/modules/meson.build
-+++ b/src/modules/meson.build
-@@ -61,6 +61,9 @@ all_modules = [
-   [ 'module-virtual-sink', 'module-virtual-sink.c' ],
-   [ 'module-virtual-source', 'module-virtual-source.c' ],
-   [ 'module-volume-restore', 'module-volume-restore.c' ],
-+  [ 'module-sles-sink', 'sles/module-sles-sink.c', [], [], [sles_dep] ],
-+  [ 'module-sles-source', 'sles/module-sles-source.c', [], [], [sles_dep] ],
-+  [ 'module-aaudio-sink', 'aaudio/module-aaudio-sink.c', [], [], [aaudio_dep] ],
- ]
- 
- if host_machine.system() == 'windows'
-diff --git a/src/pulsecore/meson.build b/src/pulsecore/meson.build
-index b37fec499..2cdac04e9 100644
---- a/src/pulsecore/meson.build
-+++ b/src/pulsecore/meson.build
-@@ -185,14 +185,7 @@ libpulsecore_simd_lib = []
- foreach simd_kwargs : simd_variants
- 
-   if host_machine.cpu_family() == 'arm' and 'neon' in simd_kwargs
--    if not cc.compiles('''
--        #include <arm_neon.h>
--        int main() {
--            return sizeof(uint8x8_t) + sizeof(int32x4_t) + sizeof(float32x4_t);
--        }
--        ''', name : 'neon code')
--      continue
--    endif
-+    continue
-   endif
- 
-   libpulsecore_simd = simd.check('libpulsecore_simd',
-diff --git a/src/tests/meson.build b/src/tests/meson.build
-index dceca55c7..04993ea1c 100644
---- a/src/tests/meson.build
-+++ b/src/tests/meson.build
-@@ -106,8 +106,6 @@ if get_option('daemon')
-     default_tests += [
-       [ 'sigbus-test', 'sigbus-test.c',
-         [ check_dep, libpulse_dep, libpulsecommon_dep, libpulsecore_dep ] ],
--      [ 'usergroup-test', 'usergroup-test.c',
--        [ check_dep, libpulse_dep, libpulsecommon_dep, libpulsecore_dep ] ],
-     ]
-   endif
- 
