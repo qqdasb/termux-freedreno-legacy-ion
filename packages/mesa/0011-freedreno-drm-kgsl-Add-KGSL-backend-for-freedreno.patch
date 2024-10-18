@@ -38,7 +38,7 @@ new file mode 100644
 index 00000000000..d42400207ad
 --- /dev/null
 +++ b/src/freedreno/drm/kgsl/kgsl_bo.c
-@@ -0,0 +1,390 @@
+@@ -0,0 +1,343 @@
 +#include "kgsl_priv.h"
 +#include "util/os_file.h"
 +#include "util/os_mman.h"
