@@ -32,7 +32,7 @@ index 74708395bb3..18fd2b764a0 100644
 +      //screen->driconf.zink_shader_object_enable = driQueryOptionb(config->options, "zink_shader_object_enable");
     }
  
-    if (!zink_create_instance(screen))
+    if (!zink_create_instance(screen, dev_major > 0 && dev_major < 255))
 diff --git a/src/mesa/main/context.c b/src/mesa/main/context.c
 index cbe8b4c0914..7b5b4505a85 100644
 --- a/src/mesa/main/context.c
